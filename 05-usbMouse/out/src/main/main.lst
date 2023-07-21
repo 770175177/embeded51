@@ -1,0 +1,958 @@
+                                      1 ;--------------------------------------------------------
+                                      2 ; File Created by SDCC : free open source ANSI-C Compiler
+                                      3 ; Version 4.1.0 #12072 (Linux)
+                                      4 ;--------------------------------------------------------
+                                      5 	.module main
+                                      6 	.optsdcc -mmcs51 --model-small
+                                      7 	
+                                      8 ;--------------------------------------------------------
+                                      9 ; Public variables in this module
+                                     10 ;--------------------------------------------------------
+                                     11 	.globl _uart_ISR
+                                     12 	.globl _timer0_ISR
+                                     13 	.globl _ext0_ISR
+                                     14 	.globl _main
+                                     15 	.globl _usb_bus_isr_ep2_in
+                                     16 	.globl _usb_bus_isr_ep2_out
+                                     17 	.globl _usb_bus_isr_ep1_in
+                                     18 	.globl _usb_bus_isr_ep1_out
+                                     19 	.globl _usb_bus_isr_ep0_in
+                                     20 	.globl _usb_bus_isr_ep0_out
+                                     21 	.globl _usb_bus_isr_reset
+                                     22 	.globl _usb_bus_isr_suspend
+                                     23 	.globl _usb_connect
+                                     24 	.globl _usb_disconnect
+                                     25 	.globl _D12_write_endpoint_buffer
+                                     26 	.globl _D12_read_id
+                                     27 	.globl _D12_read_byte
+                                     28 	.globl _D12_write_command
+                                     29 	.globl _print_short_hex
+                                     30 	.globl _Prints
+                                     31 	.globl _init_uart
+                                     32 	.globl _init_key_board
+                                     33 	.globl _TF2
+                                     34 	.globl _EXF2
+                                     35 	.globl _RCLK
+                                     36 	.globl _TCLK
+                                     37 	.globl _EXEN2
+                                     38 	.globl _TR2
+                                     39 	.globl _C_T2
+                                     40 	.globl _CP_RL2
+                                     41 	.globl _T2CON_7
+                                     42 	.globl _T2CON_6
+                                     43 	.globl _T2CON_5
+                                     44 	.globl _T2CON_4
+                                     45 	.globl _T2CON_3
+                                     46 	.globl _T2CON_2
+                                     47 	.globl _T2CON_1
+                                     48 	.globl _T2CON_0
+                                     49 	.globl _PT2
+                                     50 	.globl _ET2
+                                     51 	.globl _CY
+                                     52 	.globl _AC
+                                     53 	.globl _F0
+                                     54 	.globl _RS1
+                                     55 	.globl _RS0
+                                     56 	.globl _OV
+                                     57 	.globl _F1
+                                     58 	.globl _P
+                                     59 	.globl _PS
+                                     60 	.globl _PT1
+                                     61 	.globl _PX1
+                                     62 	.globl _PT0
+                                     63 	.globl _PX0
+                                     64 	.globl _RD
+                                     65 	.globl _WR
+                                     66 	.globl _T1
+                                     67 	.globl _T0
+                                     68 	.globl _INT1
+                                     69 	.globl _INT0
+                                     70 	.globl _TXD
+                                     71 	.globl _RXD
+                                     72 	.globl _P3_7
+                                     73 	.globl _P3_6
+                                     74 	.globl _P3_5
+                                     75 	.globl _P3_4
+                                     76 	.globl _P3_3
+                                     77 	.globl _P3_2
+                                     78 	.globl _P3_1
+                                     79 	.globl _P3_0
+                                     80 	.globl _EA
+                                     81 	.globl _ES
+                                     82 	.globl _ET1
+                                     83 	.globl _EX1
+                                     84 	.globl _ET0
+                                     85 	.globl _EX0
+                                     86 	.globl _P2_7
+                                     87 	.globl _P2_6
+                                     88 	.globl _P2_5
+                                     89 	.globl _P2_4
+                                     90 	.globl _P2_3
+                                     91 	.globl _P2_2
+                                     92 	.globl _P2_1
+                                     93 	.globl _P2_0
+                                     94 	.globl _SM0
+                                     95 	.globl _SM1
+                                     96 	.globl _SM2
+                                     97 	.globl _REN
+                                     98 	.globl _TB8
+                                     99 	.globl _RB8
+                                    100 	.globl _TI
+                                    101 	.globl _RI
+                                    102 	.globl _P1_7
+                                    103 	.globl _P1_6
+                                    104 	.globl _P1_5
+                                    105 	.globl _P1_4
+                                    106 	.globl _P1_3
+                                    107 	.globl _P1_2
+                                    108 	.globl _P1_1
+                                    109 	.globl _P1_0
+                                    110 	.globl _TF1
+                                    111 	.globl _TR1
+                                    112 	.globl _TF0
+                                    113 	.globl _TR0
+                                    114 	.globl _IE1
+                                    115 	.globl _IT1
+                                    116 	.globl _IE0
+                                    117 	.globl _IT0
+                                    118 	.globl _P0_7
+                                    119 	.globl _P0_6
+                                    120 	.globl _P0_5
+                                    121 	.globl _P0_4
+                                    122 	.globl _P0_3
+                                    123 	.globl _P0_2
+                                    124 	.globl _P0_1
+                                    125 	.globl _P0_0
+                                    126 	.globl _TH2
+                                    127 	.globl _TL2
+                                    128 	.globl _RCAP2H
+                                    129 	.globl _RCAP2L
+                                    130 	.globl _T2CON
+                                    131 	.globl _B
+                                    132 	.globl _ACC
+                                    133 	.globl _PSW
+                                    134 	.globl _IP
+                                    135 	.globl _P3
+                                    136 	.globl _IE
+                                    137 	.globl _P2
+                                    138 	.globl _SBUF
+                                    139 	.globl _SCON
+                                    140 	.globl _P1
+                                    141 	.globl _TH1
+                                    142 	.globl _TH0
+                                    143 	.globl _TL1
+                                    144 	.globl _TL0
+                                    145 	.globl _TMOD
+                                    146 	.globl _TCON
+                                    147 	.globl _PCON
+                                    148 	.globl _DPH
+                                    149 	.globl _DPL
+                                    150 	.globl _SP
+                                    151 	.globl _P0
+                                    152 	.globl _SendReport
+                                    153 ;--------------------------------------------------------
+                                    154 ; special function registers
+                                    155 ;--------------------------------------------------------
+                                    156 	.area RSEG    (ABS,DATA)
+      000000                        157 	.org 0x0000
+                           000080   158 _P0	=	0x0080
+                           000081   159 _SP	=	0x0081
+                           000082   160 _DPL	=	0x0082
+                           000083   161 _DPH	=	0x0083
+                           000087   162 _PCON	=	0x0087
+                           000088   163 _TCON	=	0x0088
+                           000089   164 _TMOD	=	0x0089
+                           00008A   165 _TL0	=	0x008a
+                           00008B   166 _TL1	=	0x008b
+                           00008C   167 _TH0	=	0x008c
+                           00008D   168 _TH1	=	0x008d
+                           000090   169 _P1	=	0x0090
+                           000098   170 _SCON	=	0x0098
+                           000099   171 _SBUF	=	0x0099
+                           0000A0   172 _P2	=	0x00a0
+                           0000A8   173 _IE	=	0x00a8
+                           0000B0   174 _P3	=	0x00b0
+                           0000B8   175 _IP	=	0x00b8
+                           0000D0   176 _PSW	=	0x00d0
+                           0000E0   177 _ACC	=	0x00e0
+                           0000F0   178 _B	=	0x00f0
+                           0000C8   179 _T2CON	=	0x00c8
+                           0000CA   180 _RCAP2L	=	0x00ca
+                           0000CB   181 _RCAP2H	=	0x00cb
+                           0000CC   182 _TL2	=	0x00cc
+                           0000CD   183 _TH2	=	0x00cd
+                                    184 ;--------------------------------------------------------
+                                    185 ; special function bits
+                                    186 ;--------------------------------------------------------
+                                    187 	.area RSEG    (ABS,DATA)
+      000000                        188 	.org 0x0000
+                           000080   189 _P0_0	=	0x0080
+                           000081   190 _P0_1	=	0x0081
+                           000082   191 _P0_2	=	0x0082
+                           000083   192 _P0_3	=	0x0083
+                           000084   193 _P0_4	=	0x0084
+                           000085   194 _P0_5	=	0x0085
+                           000086   195 _P0_6	=	0x0086
+                           000087   196 _P0_7	=	0x0087
+                           000088   197 _IT0	=	0x0088
+                           000089   198 _IE0	=	0x0089
+                           00008A   199 _IT1	=	0x008a
+                           00008B   200 _IE1	=	0x008b
+                           00008C   201 _TR0	=	0x008c
+                           00008D   202 _TF0	=	0x008d
+                           00008E   203 _TR1	=	0x008e
+                           00008F   204 _TF1	=	0x008f
+                           000090   205 _P1_0	=	0x0090
+                           000091   206 _P1_1	=	0x0091
+                           000092   207 _P1_2	=	0x0092
+                           000093   208 _P1_3	=	0x0093
+                           000094   209 _P1_4	=	0x0094
+                           000095   210 _P1_5	=	0x0095
+                           000096   211 _P1_6	=	0x0096
+                           000097   212 _P1_7	=	0x0097
+                           000098   213 _RI	=	0x0098
+                           000099   214 _TI	=	0x0099
+                           00009A   215 _RB8	=	0x009a
+                           00009B   216 _TB8	=	0x009b
+                           00009C   217 _REN	=	0x009c
+                           00009D   218 _SM2	=	0x009d
+                           00009E   219 _SM1	=	0x009e
+                           00009F   220 _SM0	=	0x009f
+                           0000A0   221 _P2_0	=	0x00a0
+                           0000A1   222 _P2_1	=	0x00a1
+                           0000A2   223 _P2_2	=	0x00a2
+                           0000A3   224 _P2_3	=	0x00a3
+                           0000A4   225 _P2_4	=	0x00a4
+                           0000A5   226 _P2_5	=	0x00a5
+                           0000A6   227 _P2_6	=	0x00a6
+                           0000A7   228 _P2_7	=	0x00a7
+                           0000A8   229 _EX0	=	0x00a8
+                           0000A9   230 _ET0	=	0x00a9
+                           0000AA   231 _EX1	=	0x00aa
+                           0000AB   232 _ET1	=	0x00ab
+                           0000AC   233 _ES	=	0x00ac
+                           0000AF   234 _EA	=	0x00af
+                           0000B0   235 _P3_0	=	0x00b0
+                           0000B1   236 _P3_1	=	0x00b1
+                           0000B2   237 _P3_2	=	0x00b2
+                           0000B3   238 _P3_3	=	0x00b3
+                           0000B4   239 _P3_4	=	0x00b4
+                           0000B5   240 _P3_5	=	0x00b5
+                           0000B6   241 _P3_6	=	0x00b6
+                           0000B7   242 _P3_7	=	0x00b7
+                           0000B0   243 _RXD	=	0x00b0
+                           0000B1   244 _TXD	=	0x00b1
+                           0000B2   245 _INT0	=	0x00b2
+                           0000B3   246 _INT1	=	0x00b3
+                           0000B4   247 _T0	=	0x00b4
+                           0000B5   248 _T1	=	0x00b5
+                           0000B6   249 _WR	=	0x00b6
+                           0000B7   250 _RD	=	0x00b7
+                           0000B8   251 _PX0	=	0x00b8
+                           0000B9   252 _PT0	=	0x00b9
+                           0000BA   253 _PX1	=	0x00ba
+                           0000BB   254 _PT1	=	0x00bb
+                           0000BC   255 _PS	=	0x00bc
+                           0000D0   256 _P	=	0x00d0
+                           0000D1   257 _F1	=	0x00d1
+                           0000D2   258 _OV	=	0x00d2
+                           0000D3   259 _RS0	=	0x00d3
+                           0000D4   260 _RS1	=	0x00d4
+                           0000D5   261 _F0	=	0x00d5
+                           0000D6   262 _AC	=	0x00d6
+                           0000D7   263 _CY	=	0x00d7
+                           0000AD   264 _ET2	=	0x00ad
+                           0000BD   265 _PT2	=	0x00bd
+                           0000C8   266 _T2CON_0	=	0x00c8
+                           0000C9   267 _T2CON_1	=	0x00c9
+                           0000CA   268 _T2CON_2	=	0x00ca
+                           0000CB   269 _T2CON_3	=	0x00cb
+                           0000CC   270 _T2CON_4	=	0x00cc
+                           0000CD   271 _T2CON_5	=	0x00cd
+                           0000CE   272 _T2CON_6	=	0x00ce
+                           0000CF   273 _T2CON_7	=	0x00cf
+                           0000C8   274 _CP_RL2	=	0x00c8
+                           0000C9   275 _C_T2	=	0x00c9
+                           0000CA   276 _TR2	=	0x00ca
+                           0000CB   277 _EXEN2	=	0x00cb
+                           0000CC   278 _TCLK	=	0x00cc
+                           0000CD   279 _RCLK	=	0x00cd
+                           0000CE   280 _EXF2	=	0x00ce
+                           0000CF   281 _TF2	=	0x00cf
+                                    282 ;--------------------------------------------------------
+                                    283 ; overlayable register banks
+                                    284 ;--------------------------------------------------------
+                                    285 	.area REG_BANK_0	(REL,OVR,DATA)
+      000000                        286 	.ds 8
+                                    287 ;--------------------------------------------------------
+                                    288 ; overlayable bit register bank
+                                    289 ;--------------------------------------------------------
+                                    290 	.area BIT_BANK	(REL,OVR,DATA)
+      000000                        291 bits:
+      000000                        292 	.ds 1
+                           008000   293 	b0 = bits[0]
+                           008100   294 	b1 = bits[1]
+                           008200   295 	b2 = bits[2]
+                           008300   296 	b3 = bits[3]
+                           008400   297 	b4 = bits[4]
+                           008500   298 	b5 = bits[5]
+                           008600   299 	b6 = bits[6]
+                           008700   300 	b7 = bits[7]
+                                    301 ;--------------------------------------------------------
+                                    302 ; internal ram data
+                                    303 ;--------------------------------------------------------
+                                    304 	.area DSEG    (DATA)
+      000000                        305 _SendReport_Buf_65536_39:
+      000000                        306 	.ds 4
+      000004                        307 _timer0_ISR_i_65536_52:
+      000004                        308 	.ds 2
+                                    309 ;--------------------------------------------------------
+                                    310 ; overlayable items in internal ram 
+                                    311 ;--------------------------------------------------------
+                                    312 ;--------------------------------------------------------
+                                    313 ; Stack segment in internal ram 
+                                    314 ;--------------------------------------------------------
+                                    315 	.area	SSEG
+      000000                        316 __start__stack:
+      000000                        317 	.ds	1
+                                    318 
+                                    319 ;--------------------------------------------------------
+                                    320 ; indirectly addressable internal ram data
+                                    321 ;--------------------------------------------------------
+                                    322 	.area ISEG    (DATA)
+                                    323 ;--------------------------------------------------------
+                                    324 ; absolute internal ram data
+                                    325 ;--------------------------------------------------------
+                                    326 	.area IABS    (ABS,DATA)
+                                    327 	.area IABS    (ABS,DATA)
+                                    328 ;--------------------------------------------------------
+                                    329 ; bit data
+                                    330 ;--------------------------------------------------------
+                                    331 	.area BSEG    (BIT)
+                                    332 ;--------------------------------------------------------
+                                    333 ; paged external ram data
+                                    334 ;--------------------------------------------------------
+                                    335 	.area PSEG    (PAG,XDATA)
+                                    336 ;--------------------------------------------------------
+                                    337 ; external ram data
+                                    338 ;--------------------------------------------------------
+                                    339 	.area XSEG    (XDATA)
+                                    340 ;--------------------------------------------------------
+                                    341 ; absolute external ram data
+                                    342 ;--------------------------------------------------------
+                                    343 	.area XABS    (ABS,XDATA)
+                                    344 ;--------------------------------------------------------
+                                    345 ; external initialized ram data
+                                    346 ;--------------------------------------------------------
+                                    347 	.area XISEG   (XDATA)
+                                    348 	.area HOME    (CODE)
+                                    349 	.area GSINIT0 (CODE)
+                                    350 	.area GSINIT1 (CODE)
+                                    351 	.area GSINIT2 (CODE)
+                                    352 	.area GSINIT3 (CODE)
+                                    353 	.area GSINIT4 (CODE)
+                                    354 	.area GSINIT5 (CODE)
+                                    355 	.area GSINIT  (CODE)
+                                    356 	.area GSFINAL (CODE)
+                                    357 	.area CSEG    (CODE)
+                                    358 ;--------------------------------------------------------
+                                    359 ; interrupt vector 
+                                    360 ;--------------------------------------------------------
+                                    361 	.area HOME    (CODE)
+      000000                        362 __interrupt_vect:
+      000000 02r00r00         [24]  363 	ljmp	__sdcc_gsinit_startup
+      000003 02r01r5A         [24]  364 	ljmp	_ext0_ISR
+      000006                        365 	.ds	5
+      00000B 02r01rF5         [24]  366 	ljmp	_timer0_ISR
+      00000E                        367 	.ds	5
+      000013 32               [24]  368 	reti
+      000014                        369 	.ds	7
+      00001B 32               [24]  370 	reti
+      00001C                        371 	.ds	7
+      000023 02r02r8A         [24]  372 	ljmp	_uart_ISR
+                                    373 ;--------------------------------------------------------
+                                    374 ; global & static initialisations
+                                    375 ;--------------------------------------------------------
+                                    376 	.area HOME    (CODE)
+                                    377 	.area GSINIT  (CODE)
+                                    378 	.area GSFINAL (CODE)
+                                    379 	.area GSINIT  (CODE)
+                                    380 	.globl __sdcc_gsinit_startup
+                                    381 	.globl __sdcc_program_startup
+                                    382 	.globl __start__stack
+                                    383 	.globl __mcs51_genXINIT
+                                    384 	.globl __mcs51_genXRAMCLEAR
+                                    385 	.globl __mcs51_genRAMCLEAR
+                                    386 ;------------------------------------------------------------
+                                    387 ;Allocation info for local variables in function 'timer0_ISR'
+                                    388 ;------------------------------------------------------------
+                                    389 ;i                         Allocated with name '_timer0_ISR_i_65536_52'
+                                    390 ;------------------------------------------------------------
+                                    391 ;	src/main.c:152: static uint32 i = 0;
+      000000 E4               [12]  392 	clr	a
+      000001 F5*04            [12]  393 	mov	_timer0_ISR_i_65536_52,a
+      000003 F5*05            [12]  394 	mov	(_timer0_ISR_i_65536_52 + 1),a
+                                    395 	.area GSFINAL (CODE)
+      000000 02r00r26         [24]  396 	ljmp	__sdcc_program_startup
+                                    397 ;--------------------------------------------------------
+                                    398 ; Home
+                                    399 ;--------------------------------------------------------
+                                    400 	.area HOME    (CODE)
+                                    401 	.area HOME    (CODE)
+      000026                        402 __sdcc_program_startup:
+      000026 02r00r00         [24]  403 	ljmp	_main
+                                    404 ;	return from main will return to caller
+                                    405 ;--------------------------------------------------------
+                                    406 ; code
+                                    407 ;--------------------------------------------------------
+                                    408 	.area CSEG    (CODE)
+                                    409 ;------------------------------------------------------------
+                                    410 ;Allocation info for local variables in function 'main'
+                                    411 ;------------------------------------------------------------
+                                    412 ;ret                       Allocated to registers 
+                                    413 ;i                         Allocated to registers 
+                                    414 ;key                       Allocated to registers 
+                                    415 ;id                        Allocated to registers r6 r7 
+                                    416 ;status                    Allocated to registers r7 
+                                    417 ;------------------------------------------------------------
+                                    418 ;	src/main.c:12: void main()
+                                    419 ;	-----------------------------------------
+                                    420 ;	 function main
+                                    421 ;	-----------------------------------------
+      000000                        422 _main:
+                           000007   423 	ar7 = 0x07
+                           000006   424 	ar6 = 0x06
+                           000005   425 	ar5 = 0x05
+                           000004   426 	ar4 = 0x04
+                           000003   427 	ar3 = 0x03
+                           000002   428 	ar2 = 0x02
+                           000001   429 	ar1 = 0x01
+                           000000   430 	ar0 = 0x00
+                                    431 ;	src/main.c:20: init_key_board();
+      000000 12r00r00         [24]  432 	lcall	_init_key_board
+                                    433 ;	src/main.c:21: init_uart();
+      000003 12r00r00         [24]  434 	lcall	_init_uart
+                                    435 ;	src/main.c:24: id = D12_read_id();
+      000006 12r00r00         [24]  436 	lcall	_D12_read_id
+      000009 AE 82            [24]  437 	mov	r6,dpl
+      00000B AF 83            [24]  438 	mov	r7,dph
+                                    439 ;	src/main.c:25: Prints("read pdiusb12 id is: ");
+      00000D 90r00r00         [24]  440 	mov	dptr,#___str_0
+      000010 75 F0 80         [24]  441 	mov	b,#0x80
+      000013 C0 07            [24]  442 	push	ar7
+      000015 C0 06            [24]  443 	push	ar6
+      000017 12r00r00         [24]  444 	lcall	_Prints
+      00001A D0 06            [24]  445 	pop	ar6
+      00001C D0 07            [24]  446 	pop	ar7
+                                    447 ;	src/main.c:26: print_short_hex(id);
+      00001E 8E 82            [24]  448 	mov	dpl,r6
+      000020 8F 83            [24]  449 	mov	dph,r7
+      000022 12r00r00         [24]  450 	lcall	_print_short_hex
+                                    451 ;	src/main.c:27: Prints("\n");
+      000025 90r00r16         [24]  452 	mov	dptr,#___str_1
+      000028 75 F0 80         [24]  453 	mov	b,#0x80
+      00002B 12r00r00         [24]  454 	lcall	_Prints
+                                    455 ;	src/main.c:29: usb_disconnect();
+      00002E 12r00r00         [24]  456 	lcall	_usb_disconnect
+                                    457 ;	src/main.c:30: usb_connect();
+      000031 12r00r00         [24]  458 	lcall	_usb_connect
+                                    459 ;	src/main.c:31: ConfigValue=0;
+      000034 75*00 00         [24]  460 	mov	_ConfigValue,#0x00
+                                    461 ;	src/main.c:33: while(1) {
+      000037                        462 00128$:
+                                    463 ;	src/main.c:37: if(D12_get_intrrupt() == 0) {
+      000037 20 B2 5F         [24]  464 	jb	_P3_2,00118$
+                                    465 ;	src/main.c:38: D12_write_command(D12_READ_INTERRUPT_REG);
+      00003A 75 82 F4         [24]  466 	mov	dpl,#0xf4
+      00003D 12r00r00         [24]  467 	lcall	_D12_write_command
+                                    468 ;	src/main.c:39: status = D12_read_byte();
+      000040 12r00r00         [24]  469 	lcall	_D12_read_byte
+                                    470 ;	src/main.c:40: if(status & 0x80)
+      000043 E5 82            [12]  471 	mov	a,dpl
+      000045 FF               [12]  472 	mov	r7,a
+      000046 30 E7 07         [24]  473 	jnb	acc.7,00102$
+                                    474 ;	src/main.c:41: usb_bus_isr_suspend();
+      000049 C0 07            [24]  475 	push	ar7
+      00004B 12r00r00         [24]  476 	lcall	_usb_bus_isr_suspend
+      00004E D0 07            [24]  477 	pop	ar7
+      000050                        478 00102$:
+                                    479 ;	src/main.c:42: if(status & 0x40)
+      000050 EF               [12]  480 	mov	a,r7
+      000051 30 E6 07         [24]  481 	jnb	acc.6,00104$
+                                    482 ;	src/main.c:43: usb_bus_isr_reset();
+      000054 C0 07            [24]  483 	push	ar7
+      000056 12r00r00         [24]  484 	lcall	_usb_bus_isr_reset
+      000059 D0 07            [24]  485 	pop	ar7
+      00005B                        486 00104$:
+                                    487 ;	src/main.c:44: if(status & 0x01)
+      00005B EF               [12]  488 	mov	a,r7
+      00005C 30 E0 07         [24]  489 	jnb	acc.0,00106$
+                                    490 ;	src/main.c:45: usb_bus_isr_ep0_out();
+      00005F C0 07            [24]  491 	push	ar7
+      000061 12r00r00         [24]  492 	lcall	_usb_bus_isr_ep0_out
+      000064 D0 07            [24]  493 	pop	ar7
+      000066                        494 00106$:
+                                    495 ;	src/main.c:46: if(status & 0x02)
+      000066 EF               [12]  496 	mov	a,r7
+      000067 30 E1 07         [24]  497 	jnb	acc.1,00108$
+                                    498 ;	src/main.c:47: usb_bus_isr_ep0_in();
+      00006A C0 07            [24]  499 	push	ar7
+      00006C 12r00r00         [24]  500 	lcall	_usb_bus_isr_ep0_in
+      00006F D0 07            [24]  501 	pop	ar7
+      000071                        502 00108$:
+                                    503 ;	src/main.c:48: if(status & 0x04)
+      000071 EF               [12]  504 	mov	a,r7
+      000072 30 E2 07         [24]  505 	jnb	acc.2,00110$
+                                    506 ;	src/main.c:49: usb_bus_isr_ep1_out();
+      000075 C0 07            [24]  507 	push	ar7
+      000077 12r00r00         [24]  508 	lcall	_usb_bus_isr_ep1_out
+      00007A D0 07            [24]  509 	pop	ar7
+      00007C                        510 00110$:
+                                    511 ;	src/main.c:50: if(status & 0x08)
+      00007C EF               [12]  512 	mov	a,r7
+      00007D 30 E3 07         [24]  513 	jnb	acc.3,00112$
+                                    514 ;	src/main.c:51: usb_bus_isr_ep1_in();
+      000080 C0 07            [24]  515 	push	ar7
+      000082 12r00r00         [24]  516 	lcall	_usb_bus_isr_ep1_in
+      000085 D0 07            [24]  517 	pop	ar7
+      000087                        518 00112$:
+                                    519 ;	src/main.c:52: if(status & 0x10)
+      000087 EF               [12]  520 	mov	a,r7
+      000088 30 E4 07         [24]  521 	jnb	acc.4,00114$
+                                    522 ;	src/main.c:53: usb_bus_isr_ep2_out();
+      00008B C0 07            [24]  523 	push	ar7
+      00008D 12r00r00         [24]  524 	lcall	_usb_bus_isr_ep2_out
+      000090 D0 07            [24]  525 	pop	ar7
+      000092                        526 00114$:
+                                    527 ;	src/main.c:54: if(status & 0x20)
+      000092 EF               [12]  528 	mov	a,r7
+      000093 30 E5 03         [24]  529 	jnb	acc.5,00118$
+                                    530 ;	src/main.c:55: usb_bus_isr_ep2_in();
+      000096 12r00r00         [24]  531 	lcall	_usb_bus_isr_ep2_in
+      000099                        532 00118$:
+                                    533 ;	src/main.c:58: if (ConfigValue != 0) {
+      000099 E5*00            [12]  534 	mov	a,_ConfigValue
+      00009B 60 9A            [24]  535 	jz	00128$
+                                    536 ;	src/main.c:59: LED = ~KeyPress;
+      00009D 78r00            [12]  537 	mov	r0,#_KeyPress
+      00009F E6               [12]  538 	mov	a,@r0
+      0000A0 F4               [12]  539 	cpl	a
+      0000A1 F5 A0            [12]  540 	mov	_P2,a
+                                    541 ;	src/main.c:60: if (!Ep1InIsBusy) {
+      0000A3 E5*00            [12]  542 	mov	a,_Ep1InIsBusy
+                                    543 ;	src/main.c:61: KeyCanChange = 0;
+      0000A5 70 90            [24]  544 	jnz	00128$
+      0000A7 78r00            [12]  545 	mov	r0,#_KeyCanChange
+      0000A9 F6               [12]  546 	mov	@r0,a
+                                    547 ;	src/main.c:62: if (KeyUp || KeyDown || KeyPress)
+      0000AA 78r00            [12]  548 	mov	r0,#_KeyUp
+      0000AC E6               [12]  549 	mov	a,@r0
+      0000AD 70 0A            [24]  550 	jnz	00119$
+      0000AF 78r00            [12]  551 	mov	r0,#_KeyDown
+      0000B1 E6               [12]  552 	mov	a,@r0
+      0000B2 70 05            [24]  553 	jnz	00119$
+      0000B4 78r00            [12]  554 	mov	r0,#_KeyPress
+      0000B6 E6               [12]  555 	mov	a,@r0
+      0000B7 60 03            [24]  556 	jz	00120$
+      0000B9                        557 00119$:
+                                    558 ;	src/main.c:63: SendReport();
+      0000B9 12r00rC3         [24]  559 	lcall	_SendReport
+      0000BC                        560 00120$:
+                                    561 ;	src/main.c:64: KeyCanChange = 1;
+      0000BC 78r00            [12]  562 	mov	r0,#_KeyCanChange
+      0000BE 76 01            [12]  563 	mov	@r0,#0x01
+                                    564 ;	src/main.c:68: }
+      0000C0 02r00r37         [24]  565 	ljmp	00128$
+                                    566 ;------------------------------------------------------------
+                                    567 ;Allocation info for local variables in function 'SendReport'
+                                    568 ;------------------------------------------------------------
+                                    569 ;Buf                       Allocated with name '_SendReport_Buf_65536_39'
+                                    570 ;------------------------------------------------------------
+                                    571 ;	src/main.c:70: void SendReport(void)
+                                    572 ;	-----------------------------------------
+                                    573 ;	 function SendReport
+                                    574 ;	-----------------------------------------
+      0000C3                        575 _SendReport:
+                                    576 ;	src/main.c:75: int8 Buf[4]={0,0,0,0};
+      0000C3 75*00 00         [24]  577 	mov	_SendReport_Buf_65536_39,#0x00
+      0000C6 75*01 00         [24]  578 	mov	(_SendReport_Buf_65536_39 + 0x0001),#0x00
+      0000C9 75*02 00         [24]  579 	mov	(_SendReport_Buf_65536_39 + 0x0002),#0x00
+      0000CC 75*03 00         [24]  580 	mov	(_SendReport_Buf_65536_39 + 0x0003),#0x00
+                                    581 ;	src/main.c:78: KeyUp &=~(KEY1|KEY2|KEY3|KEY4|KEY5|KEY6);
+      0000CF 78r00            [12]  582 	mov	r0,#_KeyUp
+      0000D1 E6               [12]  583 	mov	a,@r0
+      0000D2 54 C0            [12]  584 	anl	a,#0xc0
+      0000D4 F6               [12]  585 	mov	@r0,a
+                                    586 ;	src/main.c:79: KeyDown &=~(KEY1|KEY2|KEY3|KEY4|KEY5|KEY6);
+      0000D5 78r00            [12]  587 	mov	r0,#_KeyDown
+      0000D7 E6               [12]  588 	mov	a,@r0
+      0000D8 54 C0            [12]  589 	anl	a,#0xc0
+      0000DA F6               [12]  590 	mov	@r0,a
+                                    591 ;	src/main.c:83: if((KeyPress&(~(KEY7|KEY8)))||KeyUp||KeyDown)
+      0000DB 78r00            [12]  592 	mov	r0,#_KeyPress
+      0000DD E6               [12]  593 	mov	a,@r0
+      0000DE 54 3F            [12]  594 	anl	a,#0x3f
+      0000E0 60 02            [24]  595 	jz	00164$
+      0000E2 80 0A            [24]  596 	sjmp	00117$
+      0000E4                        597 00164$:
+      0000E4 78r00            [12]  598 	mov	r0,#_KeyUp
+      0000E6 E6               [12]  599 	mov	a,@r0
+      0000E7 70 05            [24]  600 	jnz	00117$
+      0000E9 78r00            [12]  601 	mov	r0,#_KeyDown
+      0000EB E6               [12]  602 	mov	a,@r0
+      0000EC 60 63            [24]  603 	jz	00118$
+      0000EE                        604 00117$:
+                                    605 ;	src/main.c:85: if(KeyPress & KEY1) //??KEY1????????????X?????
+      0000EE 78r00            [12]  606 	mov	r0,#_KeyPress
+      0000F0 E6               [12]  607 	mov	a,@r0
+      0000F1 30 E0 03         [24]  608 	jnb	acc.0,00102$
+                                    609 ;	src/main.c:87: Buf[1]=-1;  //?????????????
+      0000F4 75*01 FF         [24]  610 	mov	(_SendReport_Buf_65536_39 + 0x0001),#0xff
+      0000F7                        611 00102$:
+                                    612 ;	src/main.c:89: if(KeyPress & KEY2) //??KEY2????????????X?????
+      0000F7 78r00            [12]  613 	mov	r0,#_KeyPress
+      0000F9 E6               [12]  614 	mov	a,@r0
+      0000FA 30 E1 03         [24]  615 	jnb	acc.1,00104$
+                                    616 ;	src/main.c:91: Buf[1]=1;   //?????????????
+      0000FD 75*01 01         [24]  617 	mov	(_SendReport_Buf_65536_39 + 0x0001),#0x01
+      000100                        618 00104$:
+                                    619 ;	src/main.c:93: if(KeyPress & KEY3) //??KEY3????????????Y?????
+      000100 78r00            [12]  620 	mov	r0,#_KeyPress
+      000102 E6               [12]  621 	mov	a,@r0
+      000103 30 E2 03         [24]  622 	jnb	acc.2,00106$
+                                    623 ;	src/main.c:95: Buf[2]=-1;   //?????????????
+      000106 75*02 FF         [24]  624 	mov	(_SendReport_Buf_65536_39 + 0x0002),#0xff
+      000109                        625 00106$:
+                                    626 ;	src/main.c:97: if(KeyPress & KEY4)  //??KEY4????????????Y?????
+      000109 78r00            [12]  627 	mov	r0,#_KeyPress
+      00010B E6               [12]  628 	mov	a,@r0
+      00010C 30 E3 03         [24]  629 	jnb	acc.3,00108$
+                                    630 ;	src/main.c:99: Buf[2]=1;  //?????????????
+      00010F 75*02 01         [24]  631 	mov	(_SendReport_Buf_65536_39 + 0x0002),#0x01
+      000112                        632 00108$:
+                                    633 ;	src/main.c:101: if(KeyPress & KEY5)  //??KEY5????????????????
+      000112 78r00            [12]  634 	mov	r0,#_KeyPress
+      000114 E6               [12]  635 	mov	a,@r0
+      000115 30 E4 03         [24]  636 	jnb	acc.4,00110$
+                                    637 ;	src/main.c:103: Buf[3]=-1;  //?????????????
+      000118 75*03 FF         [24]  638 	mov	(_SendReport_Buf_65536_39 + 0x0003),#0xff
+      00011B                        639 00110$:
+                                    640 ;	src/main.c:105: if(KeyPress & KEY6)  //??KEY6???????????????
+      00011B 78r00            [12]  641 	mov	r0,#_KeyPress
+      00011D E6               [12]  642 	mov	a,@r0
+      00011E 30 E5 03         [24]  643 	jnb	acc.5,00112$
+                                    644 ;	src/main.c:107: Buf[3]=1;   //?????????????
+      000121 75*03 01         [24]  645 	mov	(_SendReport_Buf_65536_39 + 0x0003),#0x01
+      000124                        646 00112$:
+                                    647 ;	src/main.c:109: if(KeyPress & KEY7)  //????
+      000124 78r00            [12]  648 	mov	r0,#_KeyPress
+      000126 E6               [12]  649 	mov	a,@r0
+      000127 30 E6 06         [24]  650 	jnb	acc.6,00114$
+                                    651 ;	src/main.c:111: Buf[0]|=0x01;  //D0?????
+      00012A 74 01            [12]  652 	mov	a,#0x01
+      00012C 45*00            [12]  653 	orl	a,_SendReport_Buf_65536_39
+      00012E F5*00            [12]  654 	mov	_SendReport_Buf_65536_39,a
+      000130                        655 00114$:
+                                    656 ;	src/main.c:113: if(KeyPress & KEY8)  //????
+      000130 78r00            [12]  657 	mov	r0,#_KeyPress
+      000132 E6               [12]  658 	mov	a,@r0
+      000133 30 E7 06         [24]  659 	jnb	acc.7,00116$
+                                    660 ;	src/main.c:115: Buf[0]|=0x02;  //D1?????
+      000136 74 02            [12]  661 	mov	a,#0x02
+      000138 45*00            [12]  662 	orl	a,_SendReport_Buf_65536_39
+      00013A F5*00            [12]  663 	mov	_SendReport_Buf_65536_39,a
+      00013C                        664 00116$:
+                                    665 ;	src/main.c:118: D12_write_endpoint_buffer(3, 4, Buf);
+      00013C 75*00r00         [24]  666 	mov	_D12_write_endpoint_buffer_PARM_3,#_SendReport_Buf_65536_39
+      00013F 75*01 00         [24]  667 	mov	(_D12_write_endpoint_buffer_PARM_3 + 1),#0x00
+      000142 75*02 40         [24]  668 	mov	(_D12_write_endpoint_buffer_PARM_3 + 2),#0x40
+      000145 75*00 04         [24]  669 	mov	_D12_write_endpoint_buffer_PARM_2,#0x04
+      000148 75 82 03         [24]  670 	mov	dpl,#0x03
+      00014B 12r00r00         [24]  671 	lcall	_D12_write_endpoint_buffer
+                                    672 ;	src/main.c:119: Ep1InIsBusy=1;  //????????
+      00014E 75*00 01         [24]  673 	mov	_Ep1InIsBusy,#0x01
+      000151                        674 00118$:
+                                    675 ;	src/main.c:122: KeyUp=0;
+      000151 78r00            [12]  676 	mov	r0,#_KeyUp
+      000153 76 00            [12]  677 	mov	@r0,#0x00
+                                    678 ;	src/main.c:123: KeyDown=0;
+      000155 78r00            [12]  679 	mov	r0,#_KeyDown
+      000157 76 00            [12]  680 	mov	@r0,#0x00
+                                    681 ;	src/main.c:124: }
+      000159 22               [24]  682 	ret
+                                    683 ;------------------------------------------------------------
+                                    684 ;Allocation info for local variables in function 'ext0_ISR'
+                                    685 ;------------------------------------------------------------
+                                    686 ;status                    Allocated to registers r7 
+                                    687 ;------------------------------------------------------------
+                                    688 ;	src/main.c:126: void ext0_ISR(void) __interrupt (0)
+                                    689 ;	-----------------------------------------
+                                    690 ;	 function ext0_ISR
+                                    691 ;	-----------------------------------------
+      00015A                        692 _ext0_ISR:
+      00015A C0*00            [24]  693 	push	bits
+      00015C C0 E0            [24]  694 	push	acc
+      00015E C0 F0            [24]  695 	push	b
+      000160 C0 82            [24]  696 	push	dpl
+      000162 C0 83            [24]  697 	push	dph
+      000164 C0 07            [24]  698 	push	(0+7)
+      000166 C0 06            [24]  699 	push	(0+6)
+      000168 C0 05            [24]  700 	push	(0+5)
+      00016A C0 04            [24]  701 	push	(0+4)
+      00016C C0 03            [24]  702 	push	(0+3)
+      00016E C0 02            [24]  703 	push	(0+2)
+      000170 C0 01            [24]  704 	push	(0+1)
+      000172 C0 00            [24]  705 	push	(0+0)
+      000174 C0 D0            [24]  706 	push	psw
+      000176 75 D0 00         [24]  707 	mov	psw,#0x00
+                                    708 ;	src/main.c:130: D12_write_command(D12_READ_INTERRUPT_REG);
+      000179 75 82 F4         [24]  709 	mov	dpl,#0xf4
+      00017C 12r00r00         [24]  710 	lcall	_D12_write_command
+                                    711 ;	src/main.c:131: status = D12_read_byte();
+      00017F 12r00r00         [24]  712 	lcall	_D12_read_byte
+                                    713 ;	src/main.c:132: if(status & 0x80)
+      000182 E5 82            [12]  714 	mov	a,dpl
+      000184 FF               [12]  715 	mov	r7,a
+      000185 30 E7 07         [24]  716 	jnb	acc.7,00102$
+                                    717 ;	src/main.c:133: usb_bus_isr_suspend();
+      000188 C0 07            [24]  718 	push	ar7
+      00018A 12r00r00         [24]  719 	lcall	_usb_bus_isr_suspend
+      00018D D0 07            [24]  720 	pop	ar7
+      00018F                        721 00102$:
+                                    722 ;	src/main.c:134: if(status & 0x40)
+      00018F EF               [12]  723 	mov	a,r7
+      000190 30 E6 07         [24]  724 	jnb	acc.6,00104$
+                                    725 ;	src/main.c:135: usb_bus_isr_reset();
+      000193 C0 07            [24]  726 	push	ar7
+      000195 12r00r00         [24]  727 	lcall	_usb_bus_isr_reset
+      000198 D0 07            [24]  728 	pop	ar7
+      00019A                        729 00104$:
+                                    730 ;	src/main.c:136: if(status & 0x01)
+      00019A EF               [12]  731 	mov	a,r7
+      00019B 30 E0 07         [24]  732 	jnb	acc.0,00106$
+                                    733 ;	src/main.c:137: usb_bus_isr_ep0_out();
+      00019E C0 07            [24]  734 	push	ar7
+      0001A0 12r00r00         [24]  735 	lcall	_usb_bus_isr_ep0_out
+      0001A3 D0 07            [24]  736 	pop	ar7
+      0001A5                        737 00106$:
+                                    738 ;	src/main.c:138: if(status & 0x02)
+      0001A5 EF               [12]  739 	mov	a,r7
+      0001A6 30 E1 07         [24]  740 	jnb	acc.1,00108$
+                                    741 ;	src/main.c:139: usb_bus_isr_ep0_in();
+      0001A9 C0 07            [24]  742 	push	ar7
+      0001AB 12r00r00         [24]  743 	lcall	_usb_bus_isr_ep0_in
+      0001AE D0 07            [24]  744 	pop	ar7
+      0001B0                        745 00108$:
+                                    746 ;	src/main.c:140: if(status & 0x04)
+      0001B0 EF               [12]  747 	mov	a,r7
+      0001B1 30 E2 07         [24]  748 	jnb	acc.2,00110$
+                                    749 ;	src/main.c:141: usb_bus_isr_ep1_out();
+      0001B4 C0 07            [24]  750 	push	ar7
+      0001B6 12r00r00         [24]  751 	lcall	_usb_bus_isr_ep1_out
+      0001B9 D0 07            [24]  752 	pop	ar7
+      0001BB                        753 00110$:
+                                    754 ;	src/main.c:142: if(status & 0x08)
+      0001BB EF               [12]  755 	mov	a,r7
+      0001BC 30 E3 07         [24]  756 	jnb	acc.3,00112$
+                                    757 ;	src/main.c:143: usb_bus_isr_ep1_in();
+      0001BF C0 07            [24]  758 	push	ar7
+      0001C1 12r00r00         [24]  759 	lcall	_usb_bus_isr_ep1_in
+      0001C4 D0 07            [24]  760 	pop	ar7
+      0001C6                        761 00112$:
+                                    762 ;	src/main.c:144: if(status & 0x10)
+      0001C6 EF               [12]  763 	mov	a,r7
+      0001C7 30 E4 07         [24]  764 	jnb	acc.4,00114$
+                                    765 ;	src/main.c:145: usb_bus_isr_ep2_out();
+      0001CA C0 07            [24]  766 	push	ar7
+      0001CC 12r00r00         [24]  767 	lcall	_usb_bus_isr_ep2_out
+      0001CF D0 07            [24]  768 	pop	ar7
+      0001D1                        769 00114$:
+                                    770 ;	src/main.c:146: if(status & 0x20)
+      0001D1 EF               [12]  771 	mov	a,r7
+      0001D2 30 E5 03         [24]  772 	jnb	acc.5,00117$
+                                    773 ;	src/main.c:147: usb_bus_isr_ep2_in();
+      0001D5 12r00r00         [24]  774 	lcall	_usb_bus_isr_ep2_in
+      0001D8                        775 00117$:
+                                    776 ;	src/main.c:148: }
+      0001D8 D0 D0            [24]  777 	pop	psw
+      0001DA D0 00            [24]  778 	pop	(0+0)
+      0001DC D0 01            [24]  779 	pop	(0+1)
+      0001DE D0 02            [24]  780 	pop	(0+2)
+      0001E0 D0 03            [24]  781 	pop	(0+3)
+      0001E2 D0 04            [24]  782 	pop	(0+4)
+      0001E4 D0 05            [24]  783 	pop	(0+5)
+      0001E6 D0 06            [24]  784 	pop	(0+6)
+      0001E8 D0 07            [24]  785 	pop	(0+7)
+      0001EA D0 83            [24]  786 	pop	dph
+      0001EC D0 82            [24]  787 	pop	dpl
+      0001EE D0 F0            [24]  788 	pop	b
+      0001F0 D0 E0            [24]  789 	pop	acc
+      0001F2 D0*00            [24]  790 	pop	bits
+      0001F4 32               [24]  791 	reti
+                                    792 ;------------------------------------------------------------
+                                    793 ;Allocation info for local variables in function 'timer0_ISR'
+                                    794 ;------------------------------------------------------------
+                                    795 ;i                         Allocated with name '_timer0_ISR_i_65536_52'
+                                    796 ;------------------------------------------------------------
+                                    797 ;	src/main.c:150: void timer0_ISR(void) __interrupt (1)
+                                    798 ;	-----------------------------------------
+                                    799 ;	 function timer0_ISR
+                                    800 ;	-----------------------------------------
+      0001F5                        801 _timer0_ISR:
+      0001F5 C0 E0            [24]  802 	push	acc
+      0001F7 C0 F0            [24]  803 	push	b
+      0001F9 C0 07            [24]  804 	push	ar7
+      0001FB C0 01            [24]  805 	push	ar1
+      0001FD C0 00            [24]  806 	push	ar0
+      0001FF C0 D0            [24]  807 	push	psw
+      000201 75 D0 00         [24]  808 	mov	psw,#0x00
+                                    809 ;	src/main.c:154: TH0 = (65536 - TIMER0_RELOAD_NUM) / 256;
+      000204 75 8C DC         [24]  810 	mov	_TH0,#0xdc
+                                    811 ;	src/main.c:155: TL0 = (65536 - TIMER0_RELOAD_NUM) % 256;
+      000207 75 8A 00         [24]  812 	mov	_TL0,#0x00
+                                    813 ;	src/main.c:157: i++;
+      00020A 05*04            [12]  814 	inc	_timer0_ISR_i_65536_52
+      00020C E4               [12]  815 	clr	a
+      00020D B5*04 02         [24]  816 	cjne	a,_timer0_ISR_i_65536_52,00128$
+      000210 05*05            [12]  817 	inc	(_timer0_ISR_i_65536_52 + 1)
+      000212                        818 00128$:
+                                    819 ;	src/main.c:158: if (i > 200) {
+      000212 C3               [12]  820 	clr	c
+      000213 74 C8            [12]  821 	mov	a,#0xc8
+      000215 95*04            [12]  822 	subb	a,_timer0_ISR_i_65536_52
+      000217 E4               [12]  823 	clr	a
+      000218 95*05            [12]  824 	subb	a,(_timer0_ISR_i_65536_52 + 1)
+      00021A 50 05            [24]  825 	jnc	00102$
+                                    826 ;	src/main.c:159: i = 0;
+      00021C E4               [12]  827 	clr	a
+      00021D F5*04            [12]  828 	mov	_timer0_ISR_i_65536_52,a
+      00021F F5*05            [12]  829 	mov	(_timer0_ISR_i_65536_52 + 1),a
+      000221                        830 00102$:
+                                    831 ;	src/main.c:163: if (!KeyCanChange)
+      000221 78r00            [12]  832 	mov	r0,#_KeyCanChange
+      000223 E6               [12]  833 	mov	a,@r0
+      000224 70 02            [24]  834 	jnz	00104$
+                                    835 ;	src/main.c:164: return;
+      000226 80 55            [24]  836 	sjmp	00110$
+      000228                        837 00104$:
+                                    838 ;	src/main.c:166: KeyCurrent = GetKeyValue();
+      000228 E5 90            [12]  839 	mov	a,_P1
+      00022A F4               [12]  840 	cpl	a
+      00022B FF               [12]  841 	mov	r7,a
+      00022C 78r00            [12]  842 	mov	r0,#_KeyCurrent
+      00022E A6 07            [24]  843 	mov	@r0,ar7
+                                    844 ;	src/main.c:168: if (KeyCurrent != KeyOld) {
+      000230 78r00            [12]  845 	mov	r0,#_KeyCurrent
+      000232 79r00            [12]  846 	mov	r1,#_KeyOld
+      000234 86 F0            [24]  847 	mov	b,@r0
+      000236 E7               [12]  848 	mov	a,@r1
+      000237 B5 F0 02         [24]  849 	cjne	a,b,00131$
+      00023A 80 0C            [24]  850 	sjmp	00108$
+      00023C                        851 00131$:
+                                    852 ;	src/main.c:169: KeyNoChangedTime = 0;
+      00023C 78r00            [12]  853 	mov	r0,#_KeyNoChangedTime
+      00023E 76 00            [12]  854 	mov	@r0,#0x00
+                                    855 ;	src/main.c:170: KeyOld = KeyCurrent;
+      000240 78r00            [12]  856 	mov	r0,#_KeyCurrent
+      000242 79r00            [12]  857 	mov	r1,#_KeyOld
+      000244 E6               [12]  858 	mov	a,@r0
+      000245 F7               [12]  859 	mov	@r1,a
+                                    860 ;	src/main.c:171: return;
+      000246 80 35            [24]  861 	sjmp	00110$
+      000248                        862 00108$:
+                                    863 ;	src/main.c:174: KeyNoChangedTime++;
+      000248 78r00            [12]  864 	mov	r0,#_KeyNoChangedTime
+      00024A E6               [12]  865 	mov	a,@r0
+      00024B 78r00            [12]  866 	mov	r0,#_KeyNoChangedTime
+      00024D 04               [12]  867 	inc	a
+      00024E F6               [12]  868 	mov	@r0,a
+                                    869 ;	src/main.c:175: if (KeyNoChangedTime >= 1) {
+      00024F 78r00            [12]  870 	mov	r0,#_KeyNoChangedTime
+      000251 B6 01 00         [24]  871 	cjne	@r0,#0x01,00132$
+      000254                        872 00132$:
+      000254 40 27            [24]  873 	jc	00110$
+                                    874 ;	src/main.c:176: KeyNoChangedTime = 1;
+      000256 78r00            [12]  875 	mov	r0,#_KeyNoChangedTime
+      000258 76 01            [12]  876 	mov	@r0,#0x01
+                                    877 ;	src/main.c:177: KeyPress = KeyOld;
+      00025A 78r00            [12]  878 	mov	r0,#_KeyOld
+      00025C 79r00            [12]  879 	mov	r1,#_KeyPress
+      00025E E6               [12]  880 	mov	a,@r0
+      00025F F7               [12]  881 	mov	@r1,a
+                                    882 ;	src/main.c:178: KeyDown |= (~KeyLast) & (KeyPress);
+      000260 78r00            [12]  883 	mov	r0,#_KeyLast
+      000262 E6               [12]  884 	mov	a,@r0
+      000263 F4               [12]  885 	cpl	a
+      000264 FF               [12]  886 	mov	r7,a
+      000265 78r00            [12]  887 	mov	r0,#_KeyPress
+      000267 E6               [12]  888 	mov	a,@r0
+      000268 5F               [12]  889 	anl	a,r7
+      000269 78r00            [12]  890 	mov	r0,#_KeyDown
+      00026B 46               [12]  891 	orl	a,@r0
+      00026C F6               [12]  892 	mov	@r0,a
+                                    893 ;	src/main.c:179: KeyUp |= KeyLast & (KeyPress);
+      00026D 78r00            [12]  894 	mov	r0,#_KeyLast
+      00026F 79r00            [12]  895 	mov	r1,#_KeyPress
+      000271 E7               [12]  896 	mov	a,@r1
+      000272 56               [12]  897 	anl	a,@r0
+      000273 78r00            [12]  898 	mov	r0,#_KeyUp
+      000275 46               [12]  899 	orl	a,@r0
+      000276 F6               [12]  900 	mov	@r0,a
+                                    901 ;	src/main.c:180: KeyLast = KeyPress;
+      000277 78r00            [12]  902 	mov	r0,#_KeyPress
+      000279 79r00            [12]  903 	mov	r1,#_KeyLast
+      00027B E6               [12]  904 	mov	a,@r0
+      00027C F7               [12]  905 	mov	@r1,a
+      00027D                        906 00110$:
+                                    907 ;	src/main.c:183: }
+      00027D D0 D0            [24]  908 	pop	psw
+      00027F D0 00            [24]  909 	pop	ar0
+      000281 D0 01            [24]  910 	pop	ar1
+      000283 D0 07            [24]  911 	pop	ar7
+      000285 D0 F0            [24]  912 	pop	b
+      000287 D0 E0            [24]  913 	pop	acc
+      000289 32               [24]  914 	reti
+                                    915 ;	eliminated unneeded push/pop dpl
+                                    916 ;	eliminated unneeded push/pop dph
+                                    917 ;------------------------------------------------------------
+                                    918 ;Allocation info for local variables in function 'uart_ISR'
+                                    919 ;------------------------------------------------------------
+                                    920 ;	src/main.c:185: void uart_ISR(void)	__interrupt (4)
+                                    921 ;	-----------------------------------------
+                                    922 ;	 function uart_ISR
+                                    923 ;	-----------------------------------------
+      00028A                        924 _uart_ISR:
+                                    925 ;	src/main.c:187: if (RI) {
+                                    926 ;	src/main.c:188: RI = 0;			/* clear recieve interrupt */
+                                    927 ;	assignBit
+      00028A 10 98 05         [24]  928 	jbc	_RI,00104$
+                                    929 ;	src/main.c:190: TI = 0;
+                                    930 ;	assignBit
+      00028D C2 99            [12]  931 	clr	_TI
+                                    932 ;	src/main.c:191: sending = 0;
+      00028F 75*00 00         [24]  933 	mov	_sending,#0x00
+      000292                        934 00104$:
+                                    935 ;	src/main.c:193: }
+      000292 32               [24]  936 	reti
+                                    937 ;	eliminated unneeded mov psw,# (no regs used in bank)
+                                    938 ;	eliminated unneeded push/pop not_psw
+                                    939 ;	eliminated unneeded push/pop dpl
+                                    940 ;	eliminated unneeded push/pop dph
+                                    941 ;	eliminated unneeded push/pop b
+                                    942 ;	eliminated unneeded push/pop acc
+                                    943 	.area CSEG    (CODE)
+                                    944 	.area CONST   (CODE)
+                                    945 	.area CONST   (CODE)
+      000000                        946 ___str_0:
+      000000 72 65 61 64 20 70 64   947 	.ascii "read pdiusb12 id is: "
+             69 75 73 62 31 32 20
+             69 64 20 69 73 3A 20
+      000015 00                     948 	.db 0x00
+                                    949 	.area CSEG    (CODE)
+                                    950 	.area CONST   (CODE)
+      000016                        951 ___str_1:
+      000016 0A                     952 	.db 0x0a
+      000017 00                     953 	.db 0x00
+                                    954 	.area CSEG    (CODE)
+                                    955 	.area XINIT   (CODE)
+                                    956 	.area CABS    (ABS,CODE)

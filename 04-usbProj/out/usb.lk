@@ -1,0 +1,24 @@
+-muwx
+-i out/usb.ihx
+-M
+-b HOME = 0x0000
+-b XSEG = 0x0001
+-b PSEG = 0x0001
+-b ISEG = 0x0000
+-b BSEG = 0x0000
+-k /usr/local/bin/../share/sdcc/lib/small
+-k /usr/local/share/sdcc/lib/small
+-l mcs51
+-l libsdcc
+-l libint
+-l liblong
+-l libfloat
+out/src/delay/delay.rel
+out/src/key/key.rel
+out/src/led/led.rel
+out/src/main/main.rel
+out/src/pdiusb/pdiusb.rel
+out/src/timer/timer.rel
+out/src/uart/uart.rel
+
+-e
