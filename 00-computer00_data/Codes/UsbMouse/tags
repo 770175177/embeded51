@@ -1,0 +1,206 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+$NOMOD51	STARTUP.A51	/^$NOMOD51$/;"	l
+ACC	STARTUP.A51	/^ACC     DATA    0E0H$/;"	l
+B	STARTUP.A51	/^B       DATA    0F0H$/;"	l
+BitRate	config.h	25;"	d
+Buffer	UsbCore.c	/^idata uint8 Buffer[16];  \/\/读端点0用的缓冲区$/;"	v
+CLEAR_FEATURE	UsbCore.h	25;"	d
+CONFIGURATION_DESCRIPTOR	UsbCore.h	37;"	d
+ConfigValue	UsbCore.c	/^uint8 ConfigValue;$/;"	v
+ConfigurationDescriptor	UsbCore.c	/^code uint8 ConfigurationDescriptor[9+9+9+7]=$/;"	v
+D12AcknowledgeSetup	PDIUSBD12.c	/^void D12AcknowledgeSetup(void)$/;"	f
+D12ClearBuffer	PDIUSBD12.c	/^void D12ClearBuffer(void)$/;"	f
+D12ClrRd	PDIUSBD12.h	47;"	d
+D12ClrWr	PDIUSBD12.h	44;"	d
+D12GetData	PDIUSBD12.h	51;"	d
+D12GetIntPin	PDIUSBD12.h	49;"	d
+D12ReadByte	PDIUSBD12.c	/^uint8 D12ReadByte(void)$/;"	f
+D12ReadEndpointBuffer	PDIUSBD12.c	/^uint8 D12ReadEndpointBuffer(uint8 Endp, uint8 Len, uint8 *Buf)$/;"	f
+D12ReadEndpointLastStatus	PDIUSBD12.c	/^uint8 D12ReadEndpointLastStatus(uint8 Endp)$/;"	f
+D12ReadID	PDIUSBD12.c	/^uint16 D12ReadID(void)$/;"	f
+D12SelectEndpoint	PDIUSBD12.c	/^void D12SelectEndpoint(uint8 Endp)$/;"	f
+D12SetAddress	PDIUSBD12.c	/^void D12SetAddress(uint8 Addr)$/;"	f
+D12SetCommandAddr	PDIUSBD12.h	40;"	d
+D12SetData	PDIUSBD12.h	52;"	d
+D12SetDataAddr	PDIUSBD12.h	41;"	d
+D12SetEndpointEnable	PDIUSBD12.c	/^void D12SetEndpointEnable(uint8 Enable)$/;"	f
+D12SetPortIn	PDIUSBD12.h	55;"	d
+D12SetPortOut	PDIUSBD12.h	58;"	d
+D12SetRd	PDIUSBD12.h	46;"	d
+D12SetWr	PDIUSBD12.h	43;"	d
+D12ValidateBuffer	PDIUSBD12.c	/^void D12ValidateBuffer(void)$/;"	f
+D12WriteByte	PDIUSBD12.c	/^void D12WriteByte(uint8 Value)$/;"	f
+D12WriteCommand	PDIUSBD12.c	/^void D12WriteCommand(uint8 Command)$/;"	f
+D12WriteEndpointBuffer	PDIUSBD12.c	/^uint8 D12WriteEndpointBuffer(uint8 Endp,uint8 Len,uint8 * Buf)$/;"	f
+D12_A0	PDIUSBD12.h	34;"	d
+D12_ACKNOWLEDGE_SETUP	PDIUSBD12.h	82;"	d
+D12_CLEAR_BUFFER	PDIUSBD12.h	76;"	d
+D12_COMMAND_ADD	PDIUSBD12.h	29;"	d
+D12_DATA	PDIUSBD12.h	33;"	d
+D12_DATA_ADD	PDIUSBD12.h	30;"	d
+D12_INT	PDIUSBD12.h	37;"	d
+D12_RD	PDIUSBD12.h	36;"	d
+D12_READ_BUFFER	PDIUSBD12.h	70;"	d
+D12_SET_ADDRESS_ENABLE	PDIUSBD12.h	85;"	d
+D12_SET_ENDPOINT_ENABLE	PDIUSBD12.h	88;"	d
+D12_SET_MODE	PDIUSBD12.h	64;"	d
+D12_VALIDATE_BUFFER	PDIUSBD12.h	79;"	d
+D12_WR	PDIUSBD12.h	35;"	d
+D12_WRITE_BUFFER	PDIUSBD12.h	73;"	d
+DEBUG0	config.h	27;"	d
+DEBUG1	config.h	28;"	d
+DEVICE_DESCRIPTOR	UsbCore.h	36;"	d
+DPH	STARTUP.A51	/^DPH     DATA    83H$/;"	l
+DPL	STARTUP.A51	/^DPL     DATA    82H$/;"	l
+DelayXms	UsbCore.c	/^void DelayXms(uint16 x)                $/;"	f
+DeviceDescriptor	UsbCore.c	/^code uint8 DeviceDescriptor[0x12]=  \/\/设备描述符为18字节$/;"	v
+ENDIF	STARTUP.A51	/^ENDIF$/;"	l
+ENDPOINT_DESCRIPTOR	UsbCore.h	40;"	d
+EXTRN	STARTUP.A51	/^EXTRN DATA (?C_IBP)$/;"	l
+EXTRN	STARTUP.A51	/^EXTRN DATA (?C_PBP)$/;"	l
+EXTRN	STARTUP.A51	/^EXTRN DATA (?C_XBP)$/;"	l
+Ep1InIsBusy	UsbCore.c	/^uint8 Ep1InIsBusy;$/;"	v
+Fclk	config.h	24;"	d
+GET_CONFIGURATION	UsbCore.h	30;"	d
+GET_DESCRIPTOR	UsbCore.h	28;"	d
+GET_INTERFACE	UsbCore.h	32;"	d
+GET_STATUS	UsbCore.h	24;"	d
+GetKeyValue	Key.h	38;"	d
+HeadTable	Main.c	/^code uint8 HeadTable[][74]={$/;"	v
+HexTable	UART.c	/^code uint8 HexTable[]={'0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F'};$/;"	v
+IBPSTACK	STARTUP.A51	/^IBPSTACK        EQU     0       ; set to 1 if small reentrant is used.$/;"	d
+IBPSTACKTOP	STARTUP.A51	/^IBPSTACKTOP     EQU     0FFH+1  ; set top of stack to highest location+1.$/;"	d
+IDATALEN	STARTUP.A51	/^IDATALEN        EQU     80H     ; the length of IDATA memory in bytes.$/;"	d
+IDATALOOP	STARTUP.A51	/^IDATALOOP:      MOV     @R0,A$/;"	l
+IF	STARTUP.A51	/^IF IBPSTACK <> 0$/;"	l
+IF	STARTUP.A51	/^IF IDATALEN <> 0$/;"	l
+IF	STARTUP.A51	/^IF PBPSTACK <> 0$/;"	l
+IF	STARTUP.A51	/^IF PDATALEN <> 0$/;"	l
+IF	STARTUP.A51	/^IF PPAGEENABLE <> 0$/;"	l
+IF	STARTUP.A51	/^IF XBPSTACK <> 0$/;"	l
+IF	STARTUP.A51	/^IF XDATALEN <> 0$/;"	l
+INTERFACE_DESCRIPTOR	UsbCore.h	39;"	d
+InitKeyboard	Key.c	/^void InitKeyboard(void)$/;"	f
+InitTimer0	Key.c	/^void InitTimer0(void)$/;"	f
+InitUART	UART.c	/^void InitUART(void)$/;"	f
+KEY1	Key.h	40;"	d
+KEY2	Key.h	41;"	d
+KEY3	Key.h	42;"	d
+KEY4	Key.h	43;"	d
+KEY5	Key.h	44;"	d
+KEY6	Key.h	45;"	d
+KEY7	Key.h	46;"	d
+KEY8	Key.h	47;"	d
+KeyCanChange	Key.c	/^volatile uint8 KeyCanChange;$/;"	v
+KeyCurrent	Key.c	/^volatile uint8 idata KeyCurrent,KeyOld,KeyNoChangedTime;$/;"	v
+KeyDown	Key.c	/^volatile uint8 idata KeyDown,KeyUp,KeyLast;$/;"	v
+KeyIO	Key.h	36;"	d
+KeyLast	Key.c	/^volatile uint8 idata KeyDown,KeyUp,KeyLast;$/;"	v
+KeyNoChangedTime	Key.c	/^volatile uint8 idata KeyCurrent,KeyOld,KeyNoChangedTime;$/;"	v
+KeyOld	Key.c	/^volatile uint8 idata KeyCurrent,KeyOld,KeyNoChangedTime;$/;"	v
+KeyPress	Key.c	/^volatile uint8 idata KeyPress;$/;"	v
+KeyUp	Key.c	/^volatile uint8 idata KeyDown,KeyUp,KeyLast;$/;"	v
+LED1	LED.h	/^sbit LED1  =     LEDs^0;$/;"	v
+LED2	LED.h	/^sbit LED2  =     LEDs^1;$/;"	v
+LED3	LED.h	/^sbit LED3  =     LEDs^2;$/;"	v
+LED4	LED.h	/^sbit LED4  =     LEDs^3;$/;"	v
+LED5	LED.h	/^sbit LED5  =     LEDs^4;$/;"	v
+LED6	LED.h	/^sbit LED6  =     LEDs^5;$/;"	v
+LED7	LED.h	/^sbit LED7  =     LEDs^6;$/;"	v
+LED8	LED.h	/^sbit LED8  =     LEDs^7;$/;"	v
+LEDs	LED.h	24;"	d
+LanguageId	UsbCore.c	/^code uint8 LanguageId[4]=$/;"	v
+ManufacturerStringDescriptor	UsbCore.c	/^code uint8 ManufacturerStringDescriptor[82]={$/;"	v
+NeedZeroPacket	UsbCore.c	/^uint8 NeedZeroPacket;$/;"	v
+OffLed1	LED.h	46;"	d
+OffLed2	LED.h	47;"	d
+OffLed3	LED.h	48;"	d
+OffLed4	LED.h	49;"	d
+OffLed5	LED.h	50;"	d
+OffLed6	LED.h	51;"	d
+OffLed7	LED.h	52;"	d
+OffLed8	LED.h	53;"	d
+OnLed1	LED.h	37;"	d
+OnLed2	LED.h	38;"	d
+OnLed3	LED.h	39;"	d
+OnLed4	LED.h	40;"	d
+OnLed5	LED.h	41;"	d
+OnLed6	LED.h	42;"	d
+OnLed7	LED.h	43;"	d
+OnLed8	LED.h	44;"	d
+PBPSTACK	STARTUP.A51	/^PBPSTACK        EQU     0       ; set to 1 if compact reentrant is used.$/;"	d
+PBPSTACKTOP	STARTUP.A51	/^PBPSTACKTOP     EQU     0FFFFH+1; set top of stack to highest location+1.$/;"	d
+PDATALEN	STARTUP.A51	/^PDATALEN        EQU     0H      ; the length of PDATA memory in bytes.$/;"	d
+PDATALOOP	STARTUP.A51	/^PDATALOOP:      MOVX    @R0,A$/;"	l
+PDATASTART	STARTUP.A51	/^PDATASTART      EQU     0H      ; the absolute start-address of PDATA memory$/;"	d
+PPAGE	STARTUP.A51	/^PPAGE           EQU     0       ; define PPAGE number.$/;"	d
+PPAGEENABLE	STARTUP.A51	/^PPAGEENABLE     EQU     0       ; set to 1 if pdata object are used.$/;"	d
+PPAGE_SFR	STARTUP.A51	/^PPAGE_SFR       DATA    0A0H    ; SFR that supplies uppermost address byte$/;"	l
+PrintHex	UART.c	/^void PrintHex(uint8 x)$/;"	f
+PrintLongInt	UART.c	/^void PrintLongInt(uint32 x)$/;"	f
+PrintShortIntHex	UART.c	/^void PrintShortIntHex(uint16 x)$/;"	f
+Printc	UART.c	/^void Printc(uint8 x)$/;"	f
+Prints	UART.c	/^void Prints(uint8 * pd)$/;"	f
+ProductStringDescriptor	UsbCore.c	/^code uint8 ProductStringDescriptor[34]={$/;"	v
+READ_INTERRUPT_REGISTER	PDIUSBD12.h	67;"	d
+REPORT_DESCRIPTOR	UsbCore.h	41;"	d
+Read_ID	PDIUSBD12.h	61;"	d
+ReportDescriptor	UsbCore.c	/^code uint8 ReportDescriptor[]=$/;"	v
+SET_ADDRESS	UsbCore.h	27;"	d
+SET_CONFIGURATION	UsbCore.h	31;"	d
+SET_DESCRIPTOR	UsbCore.h	29;"	d
+SET_FEATURE	UsbCore.h	26;"	d
+SET_IDLE	UsbCore.h	43;"	d
+SET_INTERFACE	UsbCore.h	33;"	d
+SP	STARTUP.A51	/^SP      DATA    81H$/;"	l
+STARTUP1	STARTUP.A51	/^STARTUP1:$/;"	l
+STRING_DESCRIPTOR	UsbCore.h	38;"	d
+SYNCH_FRAME	UsbCore.h	34;"	d
+SendLength	UsbCore.c	/^uint16 SendLength;$/;"	v
+SendReport	Main.c	/^void SendReport(void)$/;"	f
+Sending	UART.c	/^volatile uint8 Sending;$/;"	v
+SerialNumberStringDescriptor	UsbCore.c	/^code uint8 SerialNumberStringDescriptor[22]={$/;"	v
+UartPutChar	UART.c	/^void UartPutChar(uint8 d)$/;"	f
+UsbBusReset	UsbCore.c	/^void UsbBusReset(void)$/;"	f
+UsbBusSuspend	UsbCore.c	/^void UsbBusSuspend(void)$/;"	f
+UsbConnect	UsbCore.c	/^void UsbConnect(void)$/;"	f
+UsbDisconnect	UsbCore.c	/^void UsbDisconnect(void)$/;"	f
+UsbEp0In	UsbCore.c	/^void UsbEp0In(void)$/;"	f
+UsbEp0Out	UsbCore.c	/^void UsbEp0Out(void)$/;"	f
+UsbEp0SendData	UsbCore.c	/^void UsbEp0SendData(void)$/;"	f
+UsbEp1In	UsbCore.c	/^void UsbEp1In(void)$/;"	f
+UsbEp1Out	UsbCore.c	/^void UsbEp1Out(void)$/;"	f
+UsbEp2In	UsbCore.c	/^void UsbEp2In(void)$/;"	f
+UsbEp2Out	UsbCore.c	/^void UsbEp2Out(void)$/;"	f
+XBPSTACK	STARTUP.A51	/^XBPSTACK        EQU     0       ; set to 1 if large reentrant is used.$/;"	d
+XBPSTACKTOP	STARTUP.A51	/^XBPSTACKTOP     EQU     0FFFFH+1; set top of stack to highest location+1.$/;"	d
+XDATALEN	STARTUP.A51	/^XDATALEN        EQU     0H      ; the length of XDATA memory in bytes.$/;"	d
+XDATALOOP	STARTUP.A51	/^XDATALOOP:      MOVX    @DPTR,A$/;"	l
+XDATASTART	STARTUP.A51	/^XDATASTART      EQU     0H      ; the absolute start-address of XDATA memory$/;"	d
+__CONFIG_H__	config.h	22;"	d
+__KEY_H__	Key.h	23;"	d
+__LED_H__	LED.h	22;"	d
+__MY_TYPE_H__	MyType.h	22;"	d
+__PDIUSBD12_H__	PDIUSBD12.h	23;"	d
+__UART_C__	UART.h	22;"	d
+__USBCORE_H__	UsbCore.h	22;"	d
+bRequest	UsbCore.c	/^uint8  bRequest;$/;"	v
+bmRequestType	UsbCore.c	/^uint8  bmRequestType;$/;"	v
+int16	MyType.h	28;"	d
+int32	MyType.h	29;"	d
+int64	MyType.h	31;"	d
+int8	MyType.h	27;"	d
+main	Main.c	/^void main(void)  \/\/主函数$/;"	f
+pSendData	UsbCore.c	/^uint8 * pSendData;$/;"	v
+uint16	MyType.h	25;"	d
+uint32	MyType.h	26;"	d
+uint64	MyType.h	30;"	d
+uint8	MyType.h	24;"	d
+wIndex	UsbCore.c	/^uint16 wIndex;$/;"	v
+wLength	UsbCore.c	/^uint16 wLength;$/;"	v
+wValue	UsbCore.c	/^uint16 wValue;$/;"	v
