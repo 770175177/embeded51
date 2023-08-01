@@ -1,0 +1,10 @@
+{
+    "files.associations": {
+        "type_traits": "c",
+        "types.h": "c",
+        "config.h": "c",
+        "usbcore.h": "c",
+        "system_error": "c",
+        "led.h": "c"
+    }
+}

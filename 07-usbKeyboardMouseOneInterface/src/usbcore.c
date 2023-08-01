@@ -31,8 +31,8 @@ __code uint8 DeviceDescriptor[0x12] = {      /* desciptor length is 18 bytes */
     0x10,   /* bMaxPacketSize0, PDIUSB12 endpoint 0 size is 16 bytes */
     0x88,
     0x88,   /* idVendor, 0x8888 */
-    0x02,
-    0x00,   /* idProduct, 0x0002 */
+    0x03,
+    0x00,   /* idProduct, 0x0003 */
     0x00,
     0x01,   /* bcdDevice, device version set to 1.0 */
     0x01,   /* iManufacturer, vendor string index */
@@ -169,7 +169,18 @@ __code uint8 ProductStringDescriptor[] = {
     'o', 0x00,
     'a', 0x00,
     'r', 0x00,
-    'd', 0x00
+    'd', 0x00,
+    ' ', 0x00,
+    'w', 0x00,
+    'i', 0x00,
+    't', 0x00,
+    'h', 0x00,
+    ' ', 0x00,
+    'M', 0x00,
+    'o', 0x00,
+    'u', 0x00,
+    's', 0x00,
+    'e', 0x00,
 };
 
 __code uint8 SerialNumberStringDescriptor[] = {
@@ -181,13 +192,14 @@ __code uint8 SerialNumberStringDescriptor[] = {
     '3', 0x00,
     '-', 0x00,
     '0', 0x00,
-    '7', 0x00,
+    '8', 0x00,
     '-', 0x00,
-    '2', 0x00,
-    '3', 0x00
+    '0', 0x00,
+    '2', 0x00
 };
 
 __code uint8 ReportDescriptor[] = {
+    /********************** USB Keyboard ****************************/
     /* the first byte of a line is the item prefix: */
     /* D7:D4 - btag */
     /* D3:D2 - bType */
@@ -198,6 +210,8 @@ __code uint8 ReportDescriptor[] = {
     0x09, 0x06,
     /* item3: main item(bType is 0), this application usage for key */
     0xa1, 0x01,
+    /* report ID1 */
+    0x85, 0x01,
     /* item4: global item, this usage is keyboard */
     0x05, 0x07,
     /* item5: local item, usage min is 0xE0, infact is keyboard left Ctrl button */
@@ -260,6 +274,69 @@ __code uint8 ReportDescriptor[] = {
     /* item33: main item, output, add 3 bit as 8 bit */
     0x91, 0x03,
     /* item34: main item, close collection */
+    0xC0,
+
+    /********************** USB Keyboard ****************************/
+    /* the first byte of a line is the item prefix: */
+    /* D7:D4 - btag */
+    /* D3:D2 - bType */
+    /* D1:D0 - bSize */
+    /* item1: global item(bType is 1), bSize is 1. this is a generic desktop page(0x1) */
+    0x05, 0x01,
+    /* item2: local item(bType is 2), this usage is mouse(0x02) */
+    0x09, 0x02,
+    /* item3: main item(bType is 0), this application usage for mouse */
+    0xa1, 0x01,
+    /* report ID2 */
+    0x85, 0x02,
+    /* item4: local item, this is pointer collection */
+    0x09, 0x01,
+    /* item5: main item, this is a physical collection(0x00) */
+    0xa1, 0x00,
+    /* item6: global item, this usage is button(0x09) */
+    0x05, 0x09,
+    /* item7: local item, usage min is 1, this is left button of mouse */
+    0x19, 0x01,
+    /* item8: local item, usage max is 3, this is middule button of mouse */
+    0x29, 0x03,
+    /* item9: global item, this returned logical number min is 0 */
+    0x15, 0x00,
+    /* item10: global item, this logical max is 1 */
+    0x25, 0x01,
+    /* item11: global item, data items number is 3 */
+    0x95, 0x03,
+    /* item12: global item, data length is 1 */
+    0x75, 0x01,
+    /* item13: main item, has 3 data, each length is 1, as input(data, Var, Abs) */
+    /* data 1 bit 0 instead of left button, data2 bit 1 instead of right button, data3 bit 2 instead of middule button */
+    0x81, 0x02,
+    /* item14: global item, data num is 1 */
+    0x95, 0x01,
+    /* item15: global item, data length is 5 */
+    0x75, 0x05,
+    /* item16: main item, for input */
+    0x81, 0x03,
+    /* item17: global item, generic desktop */
+    0x05, 0x01,
+    /* item18: local, x aray */
+    0x09, 0x30,
+    /* item19: local, y aray */
+    0x09, 0x31,
+    /* item20: local, wheel */
+    0x09, 0x38,
+    /* item21-item22: main, this absolute value */
+    0x15, 0x81,
+    0x25, 0x7F,
+    /* item23: global, data length is 8 */
+    0x75, 0x08,
+    /* item24: global, data num is 3 */
+    0x95, 0x03,
+    /* item25: main, 3 data is for input(Data, Var, Rel) */
+    /* data instead data is variable, Var instead data is isoland, Rel instead data is absolute */
+    /* 1st 8 bit instead x aray, 2nd 8 bit instead Y aray, 3rd 8 bit instead wheel */
+    0x81, 0x06,
+    /* item26: close item above */
+    0xC0,
     0xC0
 };
 
@@ -614,18 +691,19 @@ void usb_bus_isr_ep0_in()
 
 void usb_bus_isr_ep1_out()
 {
-    uint8 buf[1];
+    uint8 buf[2];
 #ifdef DEBUG0
     Prints("usb core ep1 out\n");
 #endif
     /* read last status, it will clear endpoint out interrupt flags */
     D12_read_endpoint_last_status(2);
     /* read 1 byte in endpoint out buffer */
-    D12_read_endpoint_buffer(2, 1, buf);
+    D12_read_endpoint_buffer(2, 2, buf);
     /* clear endpoint buffer */
     D12_clear_buffer();
     /* output report is LED status, when bit is 1, then the light will on */
-    LED = ~buf[0];
+    if (buf[0] == 0x1)
+        LED = ~buf[1];
 }
 
 void usb_bus_isr_ep1_in()
